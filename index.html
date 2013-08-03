@@ -1,0 +1,61 @@
+---
+layout: main
+title: Your Album Title Here
+root_path: .
+---
+
+<div class="main-story">
+  <div class="splash-photo" style="background-image: url({{ page.root_path }}/images/splash_image.jpg)"></div>
+  <h1><span>Our Trip<br><i>to</i> Japan</span></h1>
+  <div class="responsive-photo-grid">
+    <div class="padding-container"><noscript><b>Please enable JavaScript.</b></noscript></div>
+  </div>
+</div>
+{% include bottom_nav.html %}
+
+<script>
+$(function() {
+  var entries = [
+    '## Off to the East',
+    '== Off to the East',
+    'In the spring of 2009, we flew across the ocean',
+    'preview/IMG_0215.gif->http://www.tokyotower.co.jp/english/',
+
+    '## Temples and Palaces',
+    'To a place steeped in tradition and history',
+    'preview/IMG_6796.gif->http://www.asiarediscovery.com/japan/119-tokyo-ueno-park-kiyomizu-kannon-do-temple',
+    [
+      'preview/IMG_6641.gif',
+      'preview/IMG_7256.gif'
+    ],
+    'preview/IMG_7457.gif',
+    [
+      'preview/IMG_9241.gif',
+      'preview/IMG_9147.gif->http://www.shokoku-ji.jp/k_access.html'
+    ],
+    // 'preview/IMG_6651.gif', // Hiding this photo
+
+    '## Seen Around Town',
+    'But also living in the present',
+    'preview/IMG_6684.gif',
+    'preview/IMG_7105.gif',
+    [
+      'preview/IMG_7618.gif',
+      'preview/IMG_7619.gif'
+    ],
+    'preview/IMG_7471.gif',
+
+    '## Critters',
+    'And plenty of animals',
+    'preview/IMG_8927.gif->http://www.kaiyukan.com/language/eng/index.htm',
+    '"" Awww ... so cute!',
+    'preview/IMG_7327.gif->http://www.petfirst.jp/shop/shop90_nkbtop/',
+    // 'preview/IMG_8960.gif', // Hiding this photo
+    
+    'We will be back some day',
+    'preview/IMG_0186.gif'
+  ];
+
+  new SEQ.ResponsiveGallery($(".responsive-photo-grid .padding-container"), entries);
+});
+</script>
