@@ -6,8 +6,6 @@ Driven by JavaScript and Jekyll. See the example album this software generated a
 
 - http://www.seqmedia.com/projects/responsive_album
 
-Version 0.0000001
-
 Installation
 ------------
 
