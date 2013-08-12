@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body { height: 100%; }
+
+body {
+  background-color: #FFF;
+  text-align: left;
+}
+
+h1, h2, h3, h4, h5, h6, p { 
+  font-size: 100%;
+  font-weight: normal;
+  margin: 0;
+}
+
+a         { color: #00a; }
+a:hover   { color: #000; }
+a:visited { color: #a0a; }
+
+img {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+table {
+  font-size: inherit;
+  font: 100%;
+}

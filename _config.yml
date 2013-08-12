@@ -1,5 +1,8 @@
-name: Your Super Album
+name: Your New Jekyll Site
+index_page:
+footer_content: "Built with <a href='https://github.com/amster/responsive_album'>Responsive Album</a> by <a href='http://www.seqmedia.com'>Sequence Mediaworks</a>"
+
 pygments: true
 sass:
     syntax: scss        # scss|sass
-    style:  compressed  # nested|expanded|compact|compressed
+    style:  compact     # nested|expanded|compact|compressed

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    {% include browser_settings.html %}
+    {% include stylesheets.html %}
+    {% include javascripts.html %}
+
+    <title>
+      {{ site.whoa }}
+      {% if page.head_title %}
+        {{ page.head_title }}
+      {% else %}
+        {{ site.name }}
+      {% endif %}
+    </title>
+  </head>
+  <body>
+    <div class="site-container">
+      {% include header.html %}
+      <article class="article-container">
+        {{ content }}
+      </article>
+      {% include footer.html %}
+    </div>
+  </body>
+</html>

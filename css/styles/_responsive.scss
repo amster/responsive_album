@@ -1,0 +1,49 @@
+@import "config";
+
+@media only screen and (min-width: $mobile_width + 1) {
+  .article-banner {
+    h1 {
+      font-size: $mobile_h1_font_size;
+    }
+
+    summary {
+      font-size: $mobile_summary_font_size;
+    }
+  }
+}
+@media only screen and (min-width: $mobile_large_width + 1) {
+  .article-banner {
+    h1 {
+      font-size: $mobile_large_h1_font_size;
+    }
+
+    summary {
+      font-size: $mobile_large_summary_font_size;
+    }
+  }
+  .article-content {
+    font-size: $mobile_large_font_size;
+    
+    h2 {
+      font-size: $mobile_large_h2_font_size;
+    }
+  }
+}
+@media only screen and (min-width: $presentation_width + 1) {
+  .article-banner {
+    h1 {
+      font-size: $presentation_h1_font_size;
+    }
+
+    summary {
+      font-size: $presentation_summary_font_size;
+    }
+  }
+  .article-content {
+    font-size: $presentation_font_size;
+    
+    h2 {
+      font-size: $presentation_h2_font_size;
+    }
+  }
+}

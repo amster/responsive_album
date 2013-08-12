@@ -1,0 +1,70 @@
+@import "config";
+
+.article-banner {
+  background: #222 $base_article_splash_image top center;
+  background-size: auto 100%;
+  text-align: right;
+
+  h1 {
+    font-size: $base_h1_font_size;
+    font-family: $base_h1_font_family;
+    color: $base_h1_color;
+    line-height: 0.9em;
+    text-shadow: $base_h1_text_shadow;
+    
+    i {
+      font-size: 0.6em;
+      position: relative;
+      bottom: 0.3em;
+    }
+  }
+  summary {
+    font-size: $base_summary_font_size;
+    font-family: $base_summary_font_family;
+    color: $base_summary_color;
+    line-height: 1em;
+    text-shadow: $base_h1_text_shadow;
+  }
+}
+.article-content {
+  line-height: $base_article_line_height;
+  text-align: center;
+
+  h2 {
+    font-size: $base_h2_font_size;
+    font-family: $base_h2_font_family;
+    line-height: 1em;
+  }
+  
+  quote {
+    font-style: italic;
+    
+    &:before {
+      content: "“";
+    }
+    &:after {
+      content: "”";
+    }
+  }
+  
+  .article-image {
+    a {
+      margin: 0;
+      padding: 0;
+      font-size: 0;
+      line-height: 0;
+      text-decoration: none;
+    }
+    
+    .loading-spinner {
+      font-size: $loading_spinner_font_size;
+      white-space: nowrap;
+      
+      img {
+        height: $loading_spinner_font_size;
+        width: auto;
+        margin-right: 10px;
+      }
+    }
+  }
+}

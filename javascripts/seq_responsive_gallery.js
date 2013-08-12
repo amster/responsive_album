@@ -21,25 +21,7 @@
 // limitations under the License.
 
 var SEQ;
-SEQ = $.extend({
-  IMAGES_URL_PREFIX: 'images/',
-
-  SPINNER_IMAGE: 'spinner.gif',
-  SPINNER_TEXT: 'Loading ...',
-
-  PREVIEW_IMAGE_SUBSTRING: 'preview/',
-  LARGE_IMAGE_SUBSTRING:'large/',
-
-  PREVIEW_IMAGE_EXTENSION: '.gif',
-  LARGE_IMAGE_EXTENSION: '.jpg',
-
-  SECTION_REGEX: /^\#\# /,
-  SUBHEAD_REGEX: /^== /,
-  TEXT_BLOB_REGEX: / /,
-  QUOTE_REGEX: /^"" /,
-
-  DELAY_BEFORE_LOADING_CURRENT_VIEWPORT: 700
-}, SEQ);
+SEQ = SEQ || {};
 
 // entries: An array whose elements are one of these types:
 //
@@ -66,52 +48,80 @@ SEQ = $.extend({
 //   * '"" Make this a big quote':
 //     Shortcut to making a <quote>quoted comment</quote.
 //
-SEQ.ResponsiveGallery = function ($container, entries) {
-  var $section_index,
-      $win = $(window),
-      last_entry_type = null;
+// opts: Options you can override.
+SEQ.ResponsiveGallery = function ($container, entries, opts) {
+  var $win = $(window);
+  opts = $.extend({
+        image_prefix: 'images/',
+        preview_image_prefix: 'images/article/preview/',
 
-  function addEntries (items, $target, force_portrait) {
+        spinner_image: 'spinner.gif',
+        spinner_text: 'Loading ...',
+
+        preview_image_substring: 'preview/',
+        large_image_substring:'large/',
+
+        preview_image_extension: '.gif',
+        large_image_extension: '.jpg',
+
+        section_regex: /^\#\# /,
+        subhead_regex: /^== /,
+        text_blob_regex: / /,
+        quote_regex: /^"" /,
+        
+        textblob_classname: 'article-text',
+        quote_classname: 'article-quote',
+        image_classname: 'article-image',
+        image_set_classname: 'article-image-set',
+        image_set_items_classname: 'article-image-set-items',
+        
+        image_is_preview_classname: 'preview-gallery-photo',
+        image_is_loading_classname: 'loading-gallery-photo',
+        image_did_load_classname: 'loaded-gallery-photo',
+        loading_spinner_classname: 'loading-spinner',
+
+        site_menu_items_classname: 'site-menu-items',
+        site_menu_item_classname: 'site-menu-item',
+
+        delay_before_loading_current_viewport: 700,
+        beyond_screen_loading_range: 1200
+      }, opts);
+
+  function addEntries (items, $target) {
     $.each(items, function(idx, entry) {
       if ($.isArray(entry)) {
-        addEntries(entry, $target, true);
-      } else if (entry.match(SEQ.SECTION_REGEX)) {
-        addPhotoBreak($target);
+        var $set = $('<div class="'+opts.image_set_classname+'"><div class="'+opts.image_set_items_classname+'"></div></div>');
+        addEntries(entry, $set.find("." + opts.image_set_items_classname));
+        $target.append($set);
+      } else if (entry.match(opts.section_regex)) {
         addSection($target, entry);
-      } else if (entry.match(SEQ.SUBHEAD_REGEX)) {
-        addPhotoBreak($target);
+      } else if (entry.match(opts.subhead_regex)) {
         addSubhead($target, entry, 1);
-      } else if (entry.match(SEQ.TEXT_BLOB_REGEX)) {
-        addPhotoBreak($target);
+      } else if (entry.match(opts.text_blob_regex)) {
         addTextblob($target, entry);  // Including quotes
       } else {
-        addPhoto($target, entry, force_portrait);
+        addImage($target, entry);
       }
     });
   }
 
-  function addPhoto ($container, url, force_portrait) {
+  function addImage ($container, url) {
     var $div,
         $img,
+        img_url,
         external_url;
 
-    $div = $('<div class="gallery-photo"></div>');
+    $div = $('<div class="'+opts.image_classname+'"></div>');
     if (url.indexOf('->') >= 0) {
       external_url = url.replace(/^.*->/, '');
       url = url.replace(/->.*$/, '');
       $div.data('external-url', external_url);
     }
 
-    $img = $('<img src="'+SEQ.IMAGES_URL_PREFIX+url+'">');
-    if (force_portrait) {
-      $div.addClass('portrait-photo');
-      last_entry_type = 'photo-portrait';
-    } else {
-      $div.addClass('landscape-photo');
-      last_entry_type = 'photo-landscape';
-    }
-    if (url.indexOf(SEQ.PREVIEW_IMAGE_SUBSTRING)>=0) {
-      $img.addClass('preview-gallery-photo');
+    img_url = opts.preview_image_prefix+url;
+    $img = $('<img src="'+img_url+'">');
+    if (img_url.indexOf(opts.preview_image_substring)>=0) {
+      $img.addClass(opts.image_is_preview_classname);
     }
     $img.appendTo($div);
     if (external_url) {
@@ -121,38 +131,15 @@ SEQ.ResponsiveGallery = function ($container, entries) {
     $container.append($div);
   }
 
-  function addPhotoBreak($container) {
-    if (last_entry_type === 'photo-portrait') {
-      $container.append('<div class="clear"></div>');
-    }
-  }
-
   function addSection ($container, text) {
-    var title = text.replace(SEQ.SECTION_REGEX, ''),
-        section_hash = title.toLowerCase().replace(/ /g, '-').replace(/[^a-z\-]/g, '');
-        
-    if (!$section_index) {
-      $section_index = $('<div class="gallery-section-index">'+
-          '<div class="gallery-responsive-tab icon-reorder"></div>'+
-          '</div>');
-      $('body').append($section_index);
-
-      $section_index.on("click", function(ev) {
-        ev.stopImmediatePropagation();
-        $section_index.toggleClass("hovered");
-      }).on("mouseenter", function() {
-        $section_index.addClass("hovered");
-      }).on("mouseleave", function() {
-        $section_index.removeClass("hovered");
-      });
-    }
-
-    $section_index.append('<div class="gallery-item">'+
+    var title = text.replace(opts.section_regex, ''),
+        section_hash = title.toLowerCase().replace(/ /g, '-').replace(/[^a-z\-]/g, ''),
+        $menu = $('.' + opts.site_menu_items_classname);
+    
+    $menu.append('<menuitem class="'+opts.site_menu_item_classname+'" type="command">'+
         '<a href="#'+section_hash+'">'+title+'</a>'+
-        '</div>');
+        '</menuitem>');
     $container.append('<div id="'+section_hash+'"></div>');
-
-    last_entry_type = 'section';
   }
 
   function addSubhead ($container, text, subheading_level) {
@@ -161,51 +148,46 @@ SEQ.ResponsiveGallery = function ($container, entries) {
         '<h'+subheading_level+'>' +
         text.replace(/^=+/,'').replace(/=+$/,'') +
         '</h'+subheading_level+'>');
-
-    last_entry_type = 'subhead';
   }
 
   function addTextblob ($container, text) {
-    if (text.match(SEQ.QUOTE_REGEX)) {
-      text = '<quote>' + text.replace(SEQ.QUOTE_REGEX, '') + '</quote>';
+    if (text.match(opts.quote_regex)) {
+      text = '<quote class="'+opts.quote_classname+'">' + text.replace(opts.quote_regex, '') + '</quote>';
     }
 
     $container.append(
-        '<div class="text-blob">'+
+        '<p class="'+opts.textblob_classname+'">'+
         text+
-        '</div>');
-
-    last_entry_type = 'text-blob';
+        '</p>');
   }
 
   function loadHighResolutionPhotos () {
-    var BEYOND_SCREEN_LOADING_RANGE = 1200,
-        scroll_top_bound = $win.scrollTop(),
-        scroll_bottom_bound = scroll_top_bound + $win.height() + BEYOND_SCREEN_LOADING_RANGE;
+    var scroll_top_bound = $win.scrollTop(),
+        scroll_bottom_bound = scroll_top_bound + $win.height() + opts.beyond_screen_loading_range;
 
-    $('.preview-gallery-photo', $container).each(function (idx, el) {
+    $('.'+opts.image_is_preview_classname, $container).each(function (idx, el) {
       var $img = $(el),
           img_y_top = $img.offset().top,
           imy_y_bottom = img_y_top + $img.outerHeight(),
-          $spinner = $('<div class="loading-spinner">'+
-              '<img src="'+SEQ.IMAGES_URL_PREFIX+'/'+SEQ.SPINNER_IMAGE+'"> '+
-              SEQ.SPINNER_TEXT+
+          $spinner = $('<div class="'+opts.loading_spinner_classname+'">'+
+              '<img src="'+opts.image_prefix+opts.spinner_image+'"> '+
+              opts.spinner_text+
               '</div>');
 
       // Within visual range, load!
       if (img_y_top < scroll_bottom_bound && imy_y_bottom > scroll_top_bound) {
-        $img.removeClass('preview-gallery-photo').addClass('loading-gallery-photo');
-        $img.after($spinner);
+        $img.removeClass(opts.image_is_preview_classname).addClass(opts.image_is_loading_classname);
+        $img.closest('.' + opts.image_classname).append($spinner);
 
         (function ($i) {
           var large_image = new Image(),
               large_image_url = $i.attr('src').
-                  replace(SEQ.PREVIEW_IMAGE_SUBSTRING, SEQ.LARGE_IMAGE_SUBSTRING).
-                  replace(SEQ.PREVIEW_IMAGE_EXTENSION, SEQ.LARGE_IMAGE_EXTENSION);
+                  replace(opts.preview_image_substring, opts.large_image_substring).
+                  replace(opts.preview_image_extension, opts.large_image_extension);
           large_image.onload = function () {
             $i.attr('src', large_image_url).
-                removeClass('loading-gallery-photo').
-                addClass('large_image-gallery-photo');
+                removeClass(opts.image_is_loading_classname).
+                addClass(opts.image_did_load_classname);
             $spinner.remove();
           }
           large_image.src = large_image_url;
@@ -218,5 +200,5 @@ SEQ.ResponsiveGallery = function ($container, entries) {
 
   $win.on("scroll", loadHighResolutionPhotos)
       .on("resize", loadHighResolutionPhotos);
-  window.setTimeout(loadHighResolutionPhotos, SEQ.DELAY_BEFORE_LOADING_CURRENT_VIEWPORT);
+  window.setTimeout(loadHighResolutionPhotos, opts.delay_before_loading_current_viewport);
 }

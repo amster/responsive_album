@@ -1,61 +1,60 @@
 ---
-layout: main
-title: Your Album Title Here
-root_path: .
+head_title: My Page Title
+article_title: Big Title <i>of the</i> Article
+article_subtitle: Subtitle rendered as an article summary
+layout: default
+page_root_url: .
 ---
 
-<div class="main-story">
-  <div class="splash-photo" style="background-image: url({{ page.root_path }}/images/splash_image.jpg)"></div>
-  <h1><span>Our Trip<br><i>to</i> Japan</span></h1>
-  <div class="responsive-photo-grid">
-    <div class="padding-container"><noscript><b>Please enable JavaScript.</b></noscript></div>
+<div class="article-banner">
+  <div class="article-banner-text">
+    <h1>{{ page.article_title }}</h1>
+    <summary>{{ page.article_subtitle }}</summary>
   </div>
 </div>
-{% include bottom_nav.html %}
-
+<div class="article-content"></div>
 <script>
-$(function() {
-  var entries = [
-    '## Off to the East',
-    '== Off to the East',
-    'In the spring of 2009, we flew across the ocean',
-    'preview/IMG_0215.gif->http://www.tokyotower.co.jp/english/',
+  $(function(){
+    var entries = [
+        '## Off to the East',
+        '== Off to the East',
+        'In the spring of 2009, we flew across the ocean',
+        'IMG_0215.gif->http://www.tokyotower.co.jp/english/',
 
-    '## Temples and Palaces',
-    'To a place steeped in tradition and history',
-    'preview/IMG_6796.gif->http://www.asiarediscovery.com/japan/119-tokyo-ueno-park-kiyomizu-kannon-do-temple',
-    [
-      'preview/IMG_6641.gif',
-      'preview/IMG_7256.gif'
-    ],
-    'preview/IMG_7457.gif',
-    [
-      'preview/IMG_9241.gif',
-      'preview/IMG_9147.gif->http://www.shokoku-ji.jp/k_access.html'
-    ],
-    // 'preview/IMG_6651.gif', // Hiding this photo
+        '## Temples and Palaces',
+        'To a place steeped in tradition and history',
+        'IMG_6796.gif->http://www.asiarediscovery.com/japan/119-tokyo-ueno-park-kiyomizu-kannon-do-temple',
+        [
+          'IMG_6641.gif',
+          'IMG_7256.gif'
+        ],
+        'IMG_7457.gif',
+        [
+          'IMG_9241.gif',
+          'IMG_9147.gif->http://www.shokoku-ji.jp/k_access.html'
+        ],
+        // 'IMG_6651.gif', // Hiding this photo
 
-    '## Seen Around Town',
-    'But also living in the present',
-    'preview/IMG_6684.gif',
-    'preview/IMG_7105.gif',
-    [
-      'preview/IMG_7618.gif',
-      'preview/IMG_7619.gif'
-    ],
-    'preview/IMG_7471.gif',
+        '## Seen Around Town',
+        'But also living in the present',
+        'IMG_6684.gif',
+        'IMG_7105.gif',
+        [
+          'IMG_7618.gif',
+          'IMG_7619.gif'
+        ],
+        'IMG_7471.gif',
 
-    '## Critters',
-    'And plenty of animals',
-    'preview/IMG_8927.gif->http://www.kaiyukan.com/language/eng/index.htm',
-    '"" Awww ... so cute!',
-    'preview/IMG_7327.gif->http://www.petfirst.jp/shop/shop90_nkbtop/',
-    // 'preview/IMG_8960.gif', // Hiding this photo
+        '## Critters',
+        'And plenty of animals',
+        'IMG_8927.gif->http://www.kaiyukan.com/language/eng/index.htm',
+        '"" Awww ... so cute!',
+        'IMG_7327.gif->http://www.petfirst.jp/shop/shop90_nkbtop/',
+        // 'IMG_8960.gif', // Hiding this photo
     
-    'We will be back some day',
-    'preview/IMG_0186.gif'
-  ];
-
-  new SEQ.ResponsiveGallery($(".responsive-photo-grid .padding-container"), entries);
-});
+        'We will be back some day',
+        'IMG_0186.gif'
+        ];
+    new SEQ.ResponsiveGallery($('.article-content'), entries);
+  });
 </script>

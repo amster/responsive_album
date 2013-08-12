@@ -1,0 +1,21 @@
+@import "config";
+
+body {
+  background: #eee;
+  
+  a {
+    &:link {
+      color: $base_link_color;
+    }
+    &:visited {
+      color: $base_visited_link_color;
+    }
+    &:hover {
+      color: $base_hover_link_color;
+    }
+  }
+}
+
+@import "styles/site";
+@import "styles/article";
+@import "styles/responsive";

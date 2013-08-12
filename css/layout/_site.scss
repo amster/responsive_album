@@ -1,0 +1,67 @@
+@import "config";
+
+.site-container {
+  width: 100%;
+  z-index: 0;
+}
+
+.site-footer {
+  padding: $base_footer_padding 0;
+  max-width: 70%;
+  margin: 0 auto;
+}
+
+.site-header {
+  width: 100%;
+  position: relative;
+  z-index: 1000;
+}
+
+.site-logo {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: $header_logo_padding;
+}
+
+.site-menu {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+}
+
+.site-menu-control {
+  text-align: right;
+
+  .site-menu-icon {
+    display: inline-block;
+    padding: $header_logo_padding;
+
+    span {
+      margin-left: 10px;
+      display: none;
+    }
+  }
+}
+
+.site-menu-item {
+  display: block;
+  padding: $menu_padding;
+  margin: 1px 0;
+  
+  a {
+    display: block;
+  }
+}
+
+.site-menu-items {
+  display: none;
+}
+
+/* Active state */
+
+.site-menu-active {
+  .site-menu-items {
+    display: block;
+  }
+}
